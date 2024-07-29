@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" >
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <title>Trang chủ</title>
+
+    <style>
+        .row{
+            margin-left:0;
+            margin-right:0;
+        }
+
+        #wrapper {
+            padding-left: 70px;
+            transition: all .4s ease 0s;
+            height: 100%;
+        }
+
+        #sidebar-wrapper {
+            margin-left: -150px;
+            left: 70px;
+            width: 250px;
+            background: #222;
+            position: fixed;
+            height: 100%;
+            z-index: 10000;
+            transition: all .4s ease 0s;
+        }
+
+        .sidebar-nav {
+            display: block;
+            float: left;
+            width: 250px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        #page-content-wrapper {
+            padding-left: 0;
+            margin-left: 0;
+            width: 100%;
+            height: auto;
+        }
+        #wrapper.active {
+            padding-left: 250px;
+        }
+        #wrapper.active #sidebar-wrapper {
+            left: 150px;
+        }
+
+        #page-content-wrapper {
+            width: 100%;
+        }
+
+        #sidebar_menu li a, .sidebar-nav li a {
+            color: #999;
+            display: block;
+            float: left;
+            text-decoration: none;
+            width: 250px;
+            background: #252525;
+            border-top: 1px solid #373737;
+            border-bottom: 1px solid #1A1A1A;
+            -webkit-transition: background .5s;
+            -moz-transition: background .5s;
+            -o-transition: background .5s;
+            -ms-transition: background .5s;
+            transition: background .5s;
+        }
+
+        .sidebar-nav li {
+            line-height: 40px;
+            text-indent: 20px;
+        }
+
+        .sidebar-nav li a {
+            color: #999999;
+            display: block;
+            text-decoration: none;
+        }
+
+        .sidebar-nav li a:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.2);
+            text-decoration: none;
+        }
+
+        .sidebar-nav li a:active,
+        .sidebar-nav li a:focus {
+            text-decoration: none;
+        }
+
+        .sidebar-nav > .sidebar-brand {
+            height: 65px;
+            line-height: 60px;
+            font-size: 18px;
+        }
+
+        .sidebar-nav > .sidebar-brand a {
+            color: #999999;
+        }
+
+        .sidebar-nav > .sidebar-brand a:hover {
+            color: #fff;
+            background: none;
+        }
+
+        #main_icon
+        {
+            float:right;
+            padding-right: 65px;
+            padding-top:20px;
+        }
+
+        @media (max-width:767px) {
+            #wrapper {
+                padding-left: 70px;
+                transition: all .4s ease 0s;
+            }
+            #sidebar-wrapper {
+                left: 70px;
+            }
+            #wrapper.active {
+                padding-left: 150px;
+            }
+            #wrapper.active #sidebar-wrapper {
+                left: 150px;
+                width: 150px;
+                transition: all .4s ease 0s;
+            }
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-dark">
+<div id="wrapper" class="active container-fluid">
+    <div id="sidebar-wrapper">
+        <ul id="sidebar_menu" class="sidebar-nav">
+            <li class="sidebar-brand"><a id="menu-toggle" href="#" class="text-white">Menu<span id="main_icon" class="glyphicon glyphicon-align-justify"></span></a></li>
+        </ul>
+        <ul class="sidebar-nav" id="sidebar">
+            <li><a class="text-white" href="/ttdt/themThongTin">Thêm thông tin đối tượng</a></li>
+            <li><a class="text-white" href="/ttdt/lietKeThongTinDoiTuong">Liệt kê thông tin đối tượng</a></li>
+            <li><a class="text-white" href="/ttdt/capNhatDoiTuong">Cập nhật đối tượng</a></li>
+        </ul>
+    </div>
+
+    <div id="page-content-wrapper">
+        <div class="page-content inset">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="gradient-text text-center">Bài thi Final JWD BackEnd</h1>
+                </div>
+            </div>
+            <div id="content" class="mt-3">
+                <div class="container text-white">
+                    <div class="row">
+                        <div class="col-12">
+                            <h3 class="text-center text-white">Cập nhật thông tin đối tượng</h3>
+                        </div>
+                    </div>
+                    <form method="post" onsubmit="return validateForm()" action="/ttdt/capNhatDoiTuongPhatBenh" th:object="${capNhatDoiTuong}">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="doi-tuong-cap-nhat">Chọn mã đối tượng muốn cập nhật</label>
+                                    <select class="form-control" id="doi-tuong-cap-nhat" required th:field="*{maDoiTuong}">
+                                        <option value="" disabled selected hidden="hidden">Vui lòng chọn đối tượng muốn cập nhật</option>
+                                        <option th:each="thongTinDoiTuong : ${thongTinDoiTuongList}" th:value="${thongTinDoiTuong.maDT}" th:text="${thongTinDoiTuong.hoTen}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="ngay-phat-benh">Ngày phát bệnh</label>
+                                    <input onblur="checkNgayPhatBenh()" onchange="setNgayKetThucCachLyThucTe()" type="date" class="form-control" id="ngay-phat-benh" required th:field="*{ngayPhatBenh}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="ngay-ket-thuc-cach-ly-thuc-te">Ngày kết thúc cách ly thực tế</label>
+                                    <input type="date" class="form-control" id="ngay-ket-thuc-cach-ly-thuc-te" required th:field="*{ngayKTCLTT}">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="text-warning">Kiểm tra kỹ thông tin trước khi cập nhật</label>
+                                    <button type="submit" class="form-control btn btn-success">Cập nhật</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateForm() {
+        if (checkNgayPhatBenh()) {
+            alert('Update thong tin phat benh cua F1 thanh cong');
+            return true;
+        }
+    }
+
+    // set ngay ket thuc cach ly thuc te
+    function setNgayKetThucCachLyThucTe() {
+        let valueNgayBD = document.getElementById('ngay-phat-benh').value;
+        let ngayBD = new Date(valueNgayBD);
+
+        let ngayKT = new Date(ngayBD);
+
+        let elementNgayKT = document.getElementById('ngay-ket-thuc-cach-ly-thuc-te');
+        elementNgayKT.value = ngayKT.toISOString().slice(0, 10);
+    }
+
+    // validate ngay phat benh
+    function checkNgayPhatBenh() {
+        let value = document.getElementById('ngay-phat-benh').value;
+        let selectedDate = new Date(value);
+        let currentDate = new Date();
+
+        if (selectedDate > currentDate) {
+            alert('Error_[19990320]: Ngay phat benh khong hop le');
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>
